@@ -1,28 +1,47 @@
+import os
 import questionary
+from task import Task
 
-new_task_template = {
-  "id": None,
-  "task_name": None,
-  "task_description": None,
-  "task_state": None
-}
+os.system("clear")
 
-todo = [
-  {
-    "id": 1,
-    "task_name": "program",
-    "task_description": "program a to do list",
-    "task_state": "ongoing"
-  }
-]
+todo_list = []
 
-print(todo)
+def create_task():
+  new_task = Task(
+    questionary.text("Task name: ").ask(),
+    questionary.text("Task description: ").ask(),
+    questionary.text("Task status: ").ask()
+  )
+
+  todo_list.append(new_task)
+
+def show_todo_list_data():
+  if len(todo_list) == 0:
+    print("No tasks")
+  else:
+    for i in todo_list:
+      print("\n")
+      i.get_data()
+      print("\n")
+
+while True:
+  choice = questionary.select (
+    "Terminal Todo Menu",
+    choices = [
+      "1. Check todo list",
+      "2. Add task",
+      "Exit"
+    ]
+  ).ask()
+
+  if choice == "1. Check todo list":
+    show_todo_list_data()
+  elif choice == "2. Add task":
+    create_task()
+  elif choice == "Exit":
+    print("Exiting the program")
+    break
+  else:
+    print("Invalid choice")
 
 
-question = questionary.text("write your task details here: ")
-new_task_template["task_name"] = questionary.text("Write task name here: ").ask()
-new_task_template["task_description"] = questionary.text("Write task description here: ").ask()
-new_task_template["task_state"] = questionary.text("Write task state here: ").ask()
-
-
-print(new_task_template)
