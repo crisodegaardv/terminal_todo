@@ -113,9 +113,14 @@ def edit_menu_test(todo_list):
         todo_list[task_index].name = user_input
 
       elif task_detail == "Description":
-        print("you choose description")
+        user_input = questionary.text("Enter new description: ").ask()
+        todo_list[task_index].description = user_input
+        print("changes applied successfully")
+
       elif task_detail == "Status":
-        print("statussss")
+        user_input = questionary.text("Write new status: ").ask()
+        todo_list[task_index].state = user_input
+        print("changes applied successfully")
 
       #print(task_data)
 
