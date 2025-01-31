@@ -1,22 +1,17 @@
-import questionary
+def delete_task_menu(tasks: list[Task]) -> None:
+  while True:
+    todo_list_names = [f"{index + 1}.{task.name}" for index, task in enumerate(tasks)]
+    todo_list_names.append("Exit")
 
-while True:
-  choice = questionary.select (
-    "Terminal Todo Menu",
-    choices = [
-      "1. Check todo list",
-      "2. Add task",
-      "Exit"
-    ]
-  ).ask()
+    choice = questionary.select(
+      message="Choose which task would you like to delete",
+      choices=todo_list_names
+    ).ask()
 
-  if choice == "1. Check todo list":
-    print(todo_list)
-  #elif choice == "2":
-
-  elif choice == "Exit":
-    print("Exiting the program")
-    break
-  else:
-    print("Invalid choice")
-
+    if choice == "Exit":
+      print("Exiting delete menu...")
+      break
+    else:
+      task_name = choice.split(".", 1)[1]  # Extracts the task name correctly
+      delete_task(task_name, tasks)
+      print("Task deleted")

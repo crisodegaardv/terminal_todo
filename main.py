@@ -30,7 +30,7 @@ def show_todo_list_data() -> None:
       print("\n")
       task.get_data()
 
-def main_menu() -> None:
+def main_menu(tasks: list[Task]) -> None:
   while True:
     print("\n")
     choice = questionary.select (
@@ -39,6 +39,7 @@ def main_menu() -> None:
         "1. Check todo list",
         "2. Add task",
         "3. Edit task",
+        "4. Delete task",
         "Exit"
       ]
     ).ask()
@@ -48,7 +49,9 @@ def main_menu() -> None:
     elif choice == "2. Add task":
       create_task()
     elif choice == "3. Edit task":
-      edit_menu(todo_list)
+      edit_menu(tasks)
+    elif choice == "4. Delete task":
+      delete_task_menu(tasks)
     elif choice == "Exit":
       print("Exiting the program")
       break
@@ -104,25 +107,35 @@ def edit_menu(tasks: list[Task]) -> None:
       #print(todo_list[task_index].name)
       #print(todo_list[task_index].description)
 
-def delete_task(task: list[Task]) -> None:
+def delete_task_menu(tasks: list[Task]) -> None:
   while True:
-    todo_list_names = [f"{index + 1}.{task.name}" for index, task in enumerate(task)]
+    todo_list_names = [f"{index + 1}.{task.name}" for index, task in enumerate(tasks)]
     todo_list_names.append("Exit")
 
     choice = questionary.select(
-      message = "Choose which task would you like to delete",
-      choices = todo_list_names
+      message="Choose which task would you like to delete",
+      choices=todo_list_names
     ).ask()
 
     if choice == "Exit":
+      print("Exiting delete menu...")
       break
     else:
-      print(choice)
+      task_name = choice.split(".", 1)[1]  # Extracts the task name correctly
+      delete_task(task_name, tasks)
+      print("Task deleted")
 
+def delete_task(task_name: str, task_list: list[Task]) -> None:
+  for task in task_list:
+    if task.name == task_name:  # Compare the name attribute
+      task_list.remove(task)
+      break
+
+  print(task_list)
 
 #edit_menu(test_list_name)
 #main_menu()
 
 #edit_menu_test(todo_list)
-#main_menu()
-delete_task(todo_list)
+main_menu(todo_list)
+#delete_task_menu("Study", todo_list)
