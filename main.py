@@ -7,13 +7,13 @@ os.system("clear")
 todo_list = []
 
 #Test
-task_1 = Task("fasdf", "djfkasdf", "djfgkasdjg")
+task_1 = Task("Study", "French", "On progress")
 task_2 = Task("áaaaaa", "bbbbb", "ccccc")
 todo_list.append(task_1)
 todo_list.append(task_2)
 #
 
-def create_task():
+def create_task() -> None:
   new_task = Task(
     questionary.text("Task name: ").ask(),
     questionary.text("Task description: ").ask(),
@@ -22,7 +22,7 @@ def create_task():
 
   todo_list.append(new_task)
 
-def show_todo_list_data():
+def show_todo_list_data() -> None:
   if len(todo_list) == 0:
     print("No tasks")
   else:
@@ -30,12 +30,7 @@ def show_todo_list_data():
       print("\n")
       task.get_data()
 
-def show_todo_list_names():
-  for task in todo_list:
-    print("\n")
-    print(task.name)
-
-def main_menu():
+def main_menu() -> None:
   while True:
     print("\n")
     choice = questionary.select (
@@ -53,39 +48,20 @@ def main_menu():
     elif choice == "2. Add task":
       create_task()
     elif choice == "3. Edit task":
-      show_todo_list_names()
+      edit_menu(todo_list)
     elif choice == "Exit":
       print("Exiting the program")
       break
     else:
       print("Invalid choice")
 
-def edit_menu(task_list):
-  new_list = [f"{i +1 }. {x}" for i, x in enumerate(task_list)]
-  new_list.append("Exit")
-  while True:
-    #print("\n")
-    choice = questionary.select (
-      "Select the task to edit",
-      choices = new_list
-    ).ask()
-
-    if choice == "Exit":
-      print("Exiting the menu...")
-      break
-    else:
-      task_index = int(choice.split(".")[0]) - 1
-      #print(test_list)
-      print(f"task selected: {task_index}")
-
-
-def edit_menu_test(todo_list):
+def edit_menu(tasks: list[Task]) -> None:
   while True:
     task_names_list = [f"{i + 1}.{x.name}" for i, x in enumerate(todo_list)]
     task_names_list.append("Exit")
 
     choice = questionary.select(
-      "Select the task you want to edit",
+      message = "Select the task you want to edit",
       choices = task_names_list
     ).ask()
 
@@ -128,7 +104,25 @@ def edit_menu_test(todo_list):
       #print(todo_list[task_index].name)
       #print(todo_list[task_index].description)
 
+def delete_task(task: list[Task]) -> None:
+  while True:
+    todo_list_names = [f"{index + 1}.{task.name}" for index, task in enumerate(task)]
+    todo_list_names.append("Exit")
+
+    choice = questionary.select(
+      message = "Choose which task would you like to delete",
+      choices = todo_list_names
+    ).ask()
+
+    if choice == "Exit":
+      break
+    else:
+      print(choice)
+
+
 #edit_menu(test_list_name)
 #main_menu()
 
-edit_menu_test(todo_list)
+#edit_menu_test(todo_list)
+#main_menu()
+delete_task(todo_list)
