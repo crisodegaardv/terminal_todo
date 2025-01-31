@@ -5,10 +5,11 @@ from task import Task
 os.system("clear")
 
 todo_list = []
+task_status_list = ["Pending", "In Progress", "Completed"]
 
 #Test
-task_1 = Task("Study", "French", "On progress")
-task_2 = Task("áaaaaa", "bbbbb", "ccccc")
+task_1 = Task("Study", "French", "In progress")
+task_2 = Task("Go to the beach", "bbbbb", "Completed")
 todo_list.append(task_1)
 todo_list.append(task_2)
 #
@@ -17,7 +18,10 @@ def create_task() -> None:
   new_task = Task(
     questionary.text("Task name: ").ask(),
     questionary.text("Task description: ").ask(),
-    questionary.text("Task status: ").ask()
+    questionary.select(
+      message = "Task status:",
+      choices = task_status_list
+    ).ask()
   )
 
   todo_list.append(new_task)
@@ -97,8 +101,12 @@ def edit_menu(tasks: list[Task]) -> None:
         print("changes applied successfully")
 
       elif task_detail == "Status":
-        user_input = questionary.text("Write new status: ").ask()
-        todo_list[task_index].state = user_input
+        new_task_status = questionary.select(
+          message="Change task status:",
+          choices=task_status_list
+        ).ask()
+
+        todo_list[task_index].state = new_task_status
         print("changes applied successfully")
 
       #print(task_data)
@@ -127,15 +135,11 @@ def delete_task_menu(tasks: list[Task]) -> None:
 
 def delete_task(task_name: str, task_list: list[Task]) -> None:
   for task in task_list:
-    if task.name == task_name:  # Compare the name attribute
+    if task.name == task_name:
       task_list.remove(task)
       break
 
   print(task_list)
 
-#edit_menu(test_list_name)
-#main_menu()
 
-#edit_menu_test(todo_list)
 main_menu(todo_list)
-#delete_task_menu("Study", todo_list)
